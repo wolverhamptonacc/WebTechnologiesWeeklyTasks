@@ -5,6 +5,7 @@ export class MyElement extends LitElement {
   static properties = {
     _listItems: { state: true },
     hideCompleted: {},
+    greeting: {}, 
   };
 
   static styles = css`
@@ -25,7 +26,9 @@ export class MyElement extends LitElement {
       { text: 'Make to-do list', completed: false },
     ];
     this.hideCompleted = false;
+    this.greeting = 'Hello from LitElement!'; 
   }
+
 
   render() {
     const items = this.hideCompleted
@@ -52,6 +55,7 @@ export class MyElement extends LitElement {
     const todosOrMessage = items.length > 0 ? todos : caughtUpMessage;
 
     return html`
+      <h2>${this.greeting}</h2>
       <h2>To Do</h2>
       ${todosOrMessage}
       <input id="newitem" aria-label="New Item">
