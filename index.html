@@ -2,7 +2,201 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lit Tutorial</title>
+  
+  <!-- Bootstrap 5.1 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  
+  <!-- Custom CSS for additional styling -->
+  <style>
+    .demo-section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: #f8f9fa;
+      border-radius: 0.375rem;
+    }
+    .content-box {
+      background-color: #e9ecef;
+      border: 2px solid #dee2e6;
+      border-radius: 0.375rem;
+      padding: 1rem;
+      text-align: center;
+      margin-bottom: 1rem;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .breakpoint-indicator {
+      display: none;
+      font-weight: bold;
+      color: #495057;
+    }
+    /* Show different indicators at different breakpoints */
+    .xs-indicator { display: block; }
+    @media (min-width: 576px) {
+      .xs-indicator { display: none; }
+      .sm-indicator { display: block; }
+    }
+    @media (min-width: 768px) {
+      .sm-indicator { display: none; }
+      .md-indicator { display: block; }
+    }
+    @media (min-width: 992px) {
+      .md-indicator { display: none; }
+      .lg-indicator { display: block; }
+    }
+    @media (min-width: 1200px) {
+      .lg-indicator { display: none; }
+      .xl-indicator { display: block; }
+    }
+    @media (min-width: 1400px) {
+      .xl-indicator { display: none; }
+      .xxl-indicator { display: block; }
+    }
+    
+    /* Mobile-specific form enhancements */
+    .form-control, .form-select {
+      font-size: 16px; /* Prevents zoom on iOS */
+      min-height: 44px; /* Touch-friendly minimum height */
+    }
+    
+    .form-control-lg {
+      min-height: 48px;
+      font-size: 18px;
+    }
+    
+    .btn {
+      min-height: 44px; /* Touch-friendly button height */
+    }
+    
+    .btn-lg {
+      min-height: 48px;
+    }
+    
+    /* Improve form spacing on mobile */
+    @media (max-width: 767.98px) {
+      .card {
+        margin: 0 -15px;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+      }
+      
+      .form-control, .form-select {
+        padding: 12px 16px;
+      }
+      
+      .form-check {
+        padding-left: 2rem;
+      }
+      
+      .form-check-input {
+        margin-left: -2rem;
+        width: 1.25em;
+        height: 1.25em;
+      }
+      
+      .form-check-label {
+        padding-left: 0.5rem;
+      }
+      
+      /* Larger touch targets for radio buttons */
+      .form-check-input[type="radio"] {
+        width: 1.5em;
+        height: 1.5em;
+      }
+      
+      /* Better spacing for form text */
+      .form-text {
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+      }
+      
+      /* Sticky form buttons on mobile for better UX */
+      .d-grid {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        padding: 1rem 0;
+        margin: 1rem -1rem -1rem -1rem;
+        border-top: 1px solid #dee2e6;
+        z-index: 10;
+      }
+    }
+    
+    /* Focus states for better accessibility */
+    .form-control:focus,
+    .form-select:focus {
+      box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+      border-color: #86b7fe;
+    }
+    
+    /* Custom validation styles */
+    .was-validated .form-control:valid,
+    .form-control.is-valid {
+      border-color: #198754;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='m2.3 6.73.94-.94 2.94 2.94L9.1 5.8l.94.94L6.47 10.2z'/%3e%3c/svg%3e");
+    }
+    
+    .was-validated .form-control:invalid,
+    .form-control.is-invalid {
+      border-color: #dc3545;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4 1.4-1.4M8.6 6l-1.4 1.4 1.4 1.4'/%3e%3c/svg%3e");
+    }
+    
+    /* Loading state for forms */
+    .form-loading {
+      position: relative;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    
+    .form-loading::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      margin: -10px 0 0 -10px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #3498db;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 1000;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    /* Improved file input styling */
+    .form-control[type="file"] {
+      padding: 8px 12px;
+    }
+    
+    /* Better range input styling */
+    .form-range {
+      height: 1.5rem;
+    }
+    
+    .form-range::-webkit-slider-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    
+    .form-range::-moz-range-thumb {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 50%;
+      border: none;
+      background: #0d6efd;
+    }
+  </style>
+  
   <!-- Load your component -->
   <script type="module" src="./my-element.js"></script>
   <!-- React and ReactDOM CDN -->
@@ -10,9 +204,662 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
 </head>
 <body>
-  <h1>Welcome to the Lit tutorial</h1>
-  <my-element></my-element>
-  <div id="root"></div>
+  <!-- Navigation Bar (Responsive) -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Lit Tutorial</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Components</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Examples</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <!-- Breakpoint Indicator -->
+    <div class="demo-section">
+      <h2>Current Breakpoint:</h2>
+      <div class="breakpoint-indicator xs-indicator">XS (Extra Small) - &lt;576px</div>
+      <div class="breakpoint-indicator sm-indicator">SM (Small) - ≥576px</div>
+      <div class="breakpoint-indicator md-indicator">MD (Medium) - ≥768px</div>
+      <div class="breakpoint-indicator lg-indicator">LG (Large) - ≥992px</div>
+      <div class="breakpoint-indicator xl-indicator">XL (Extra Large) - ≥1200px</div>
+      <div class="breakpoint-indicator xxl-indicator">XXL (Extra Extra Large) - ≥1400px</div>
+    </div>
+
+    <!-- Main Content Area with Responsive Grid -->
+    <div class="demo-section">
+      <h2>Responsive Grid Layout</h2>
+      <div class="row">
+        <!-- Main Content -->
+        <div class="col-12 col-md-8 col-lg-9">
+          <div class="content-box">
+            <div>
+              <h3>Main Content Area</h3>
+              <p>This area adapts based on screen size:</p>
+              <ul class="text-start">
+                <li><strong>XS/SM:</strong> Full width (12 columns)</li>
+                <li><strong>MD:</strong> 8 columns (66.67% width)</li>
+                <li><strong>LG+:</strong> 9 columns (75% width)</li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Original Components Section -->
+          <div class="content-box">
+            <div>
+              <h4>Lit Element Component</h4>
+              <my-element></my-element>
+            </div>
+          </div>
+          
+          <div class="content-box">
+            <div>
+              <h4>React Component</h4>
+              <div id="root"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="content-box">
+            <div>
+              <h4>Sidebar</h4>
+              <p>Responsive sidebar:</p>
+              <ul class="text-start">
+                <li><strong>XS/SM:</strong> Full width, below main content</li>
+                <li><strong>MD:</strong> 4 columns (33.33% width)</li>
+                <li><strong>LG+:</strong> 3 columns (25% width)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-Column Card Layout -->
+    <div class="demo-section">
+      <h2>Responsive Card Grid</h2>
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="content-box">
+            <div>
+              <h5>Card 1</h5>
+              <p>Responsive card layout</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="content-box">
+            <div>
+              <h5>Card 2</h5>
+              <p>Adapts to screen size</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="content-box">
+            <div>
+              <h5>Card 3</h5>
+              <p>Mobile-first design</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="content-box">
+            <div>
+              <h5>Card 4</h5>
+              <p>Bootstrap 5.1 grid</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Complex Responsive Layout -->
+    <div class="demo-section">
+      <h2>Complex Responsive Layout</h2>
+      <div class="row g-3">
+        <!-- Hero Section -->
+        <div class="col-12">
+          <div class="content-box bg-primary text-white">
+            <div>
+              <h3>Hero Section</h3>
+              <p>Always full width across all breakpoints</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Feature Boxes -->
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="content-box">
+            <div>
+              <h5>Feature 1</h5>
+              <p>XS/SM: Full | MD: Half | XL: Quarter</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="content-box">
+            <div>
+              <h5>Feature 2</h5>
+              <p>Responsive breakpoints</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="content-box">
+            <div>
+              <h5>Feature 3</h5>
+              <p>Mobile-first approach</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-xl-3">
+          <div class="content-box">
+            <div>
+              <h5>Feature 4</h5>
+              <p>Bootstrap grid system</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile-Friendly Registration Form -->
+    <div class="demo-section">
+      <h2>Mobile-Friendly Registration Form</h2>
+      
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">Create New Account</h4>
+              <p class="mb-0 text-muted">Please fill out all required fields to register</p>
+            </div>
+            <div class="card-body">
+              <form id="registerForm" novalidate>
+                <div class="row">
+                  <!-- First Name -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="firstName" class="form-label">First name</label>
+                    <input type="text" class="form-control" id="firstName" required
+                           placeholder="Enter first name">
+                    <div class="invalid-feedback">
+                      First name is required.
+                    </div>
+                  </div>
+
+                  <!-- Last Name -->
+                  <div class="col-12 col-md-6 mb-3">
+                    <label for="lastName" class="form-label">Last name</label>
+                    <input type="text" class="form-control" id="lastName" required
+                           placeholder="Enter last name">
+                    <div class="invalid-feedback">
+                      Last name is required.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-3">
+                  <label for="registerEmail" class="form-label">Email address</label>
+                  <input type="email" class="form-control" id="registerEmail" required
+                         placeholder="Enter your email" aria-describedby="emailHelp">
+                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  <div class="invalid-feedback">
+                    Please provide a valid email address.
+                  </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                  <label for="registerPassword" class="form-label">Password</label>
+                  <div class="input-group">
+                    <input type="password" class="form-control" id="registerPassword" 
+                           required aria-describedby="passwordHelp" placeholder="Enter password">
+                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                      Show
+                    </button>
+                  </div>
+                  <div id="passwordHelp" class="form-text">
+                    Password must be 8-20 characters long, contain letters and numbers.
+                  </div>
+                  <div class="invalid-feedback">
+                    Password must meet the requirements above.
+                  </div>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label">Confirm password</label>
+                  <input type="password" class="form-control" id="confirmPassword" required
+                         placeholder="Confirm your password">
+                  <div class="invalid-feedback">
+                    Passwords must match.
+                  </div>
+                </div>
+
+                <!-- Country Selection -->
+                <div class="mb-3">
+                  <label for="country" class="form-label">Country</label>
+                  <select class="form-select" id="country" required>
+                    <option value="">Choose your country...</option>
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="AU">Australia</option>
+                    <option value="DE">Germany</option>
+                    <option value="FR">France</option>
+                    <option value="JP">Japan</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select your country.
+                  </div>
+                </div>
+
+                <!-- Interests (Checkboxes) -->
+                <div class="mb-3">
+                  <label class="form-label">Interests (optional)</label>
+                  <div class="row">
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="tech" value="technology">
+                        <label class="form-check-label" for="tech">Technology</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="sports" value="sports">
+                        <label class="form-check-label" for="sports">Sports</label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-md-4">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="music" value="music">
+                        <label class="form-check-label" for="music">Music</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Terms and Conditions -->
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="terms" required>
+                  <label class="form-check-label" for="terms">
+                    I agree to the <a href="#" class="text-decoration-none">Terms and Conditions</a>
+                  </label>
+                  <div class="invalid-feedback">
+                    You must agree to the terms and conditions.
+                  </div>
+                </div>
+
+                <!-- Newsletter -->
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="newsletter">
+                  <label class="form-check-label" for="newsletter">
+                    Subscribe to our newsletter for updates
+                  </label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-success btn-lg">Create Account</button>
+                </div>
+
+                <!-- Additional Links -->
+                <div class="text-center mt-3">
+                  <p class="mb-0">Already have an account? <a href="#" class="text-decoration-none">Sign in here</a></p>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Always Open Accordion Section -->
+    <div class="demo-section">
+      <h2>Always Open Accordion</h2>
+      <p class="text-muted mb-4">This accordion allows multiple panels to remain open simultaneously. Each panel operates independently without closing others.</p>
+      
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+          <div class="accordion" id="accordionPanelsStayOpenExample">
+            
+            <!-- Accordion Item 1 - Grid System Info -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" 
+                        aria-controls="panelsStayOpen-collapseOne">
+                  Responsive Grid System
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" 
+                   aria-labelledby="panelsStayOpen-headingOne">
+                <div class="accordion-body">
+                  <strong>Bootstrap 5.1 Responsive Grid System</strong> provides a powerful mobile-first flexbox grid 
+                  to build layouts of all shapes and sizes. The grid system includes:
+                  <ul class="mt-2 mb-0">
+                    <li><strong>6 breakpoints:</strong> XS, SM, MD, LG, XL, XXL</li>
+                    <li><strong>12-column system</strong> with flexible column sizing</li>
+                    <li><strong>Container classes</strong> for responsive fixed-width layouts</li>
+                    <li><strong>Responsive utilities</strong> for spacing, display, and positioning</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Item 2 - Mobile Forms -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" 
+                        aria-controls="panelsStayOpen-collapseTwo">
+                  Mobile-Friendly Forms
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" 
+                   aria-labelledby="panelsStayOpen-headingTwo">
+                <div class="accordion-body">
+                  <strong>Mobile-optimized form controls</strong> ensure excellent user experience across all devices:
+                  <div class="row mt-2">
+                    <div class="col-12 col-md-6">
+                      <h6>Touch Optimization:</h6>
+                      <ul class="small">
+                        <li>44px minimum touch targets</li>
+                        <li>16px font size prevents zoom</li>
+                        <li>Generous padding and spacing</li>
+                        <li>Large, accessible buttons</li>
+                      </ul>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h6>User Experience:</h6>
+                      <ul class="small">
+                        <li>Real-time form validation</li>
+                        <li>Smart keyboard optimization</li>
+                        <li>Progressive enhancement</li>
+                        <li>Accessibility compliance</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Item 3 - Components Demo -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" 
+                        aria-controls="panelsStayOpen-collapseThree">
+                  Interactive Components
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse" 
+                   aria-labelledby="panelsStayOpen-headingThree">
+                <div class="accordion-body">
+                  <strong>This application demonstrates various interactive components:</strong>
+                  <div class="mt-3">
+                    <div class="row g-3">
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card h-100">
+                          <div class="card-body text-center">
+                            <h6 class="card-title">Lit Element</h6>
+                            <p class="card-text small">Web Components framework</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card h-100">
+                          <div class="card-body text-center">
+                            <h6 class="card-title">React</h6>
+                            <p class="card-text small">JavaScript library for UIs</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-sm-6 col-md-4">
+                        <div class="card h-100">
+                          <div class="card-body text-center">
+                            <h6 class="card-title">Bootstrap</h6>
+                            <p class="card-text small">CSS framework</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Accordion Item 4 - Best Practices -->
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="panelsStayOpen-headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#panelsStayOpen-collapseFour" aria-expanded="false" 
+                        aria-controls="panelsStayOpen-collapseFour">
+                  Mobile Best Practices
+                </button>
+              </h2>
+              <div id="panelsStayOpen-collapseFour" class="accordion-collapse collapse" 
+                   aria-labelledby="panelsStayOpen-headingFour">
+                <div class="accordion-body">
+                  <strong>Key mobile development principles implemented:</strong>
+                  <div class="row mt-3">
+                    <div class="col-12">
+                      <div class="alert alert-info mb-3">
+                        <h6 class="alert-heading">Mobile-First Approach</h6>
+                        Design starts with mobile screens and progressively enhances for larger devices.
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h6>Performance:</h6>
+                      <ul class="small">
+                        <li>Lightweight CSS and JavaScript</li>
+                        <li>Optimized images and assets</li>
+                        <li>Minimal HTTP requests</li>
+                        <li>Progressive loading strategies</li>
+                      </ul>
+                    </div>
+                    <div class="col-12 col-md-6">
+                      <h6>Accessibility:</h6>
+                      <ul class="small">
+                        <li>Semantic HTML structure</li>
+                        <li>ARIA labels and descriptions</li>
+                        <li>Keyboard navigation support</li>
+                        <li>High contrast and readability</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="demo-section bg-dark text-white">
+      <div class="row">
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="content-box bg-secondary">
+            <div>
+              <h5>Footer Column 1</h5>
+              <p>Responsive footer</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="content-box bg-secondary">
+            <div>
+              <h5>Footer Column 2</h5>
+              <p>Adapts to screen size</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="content-box bg-secondary">
+            <div>
+              <h5>Footer Column 3</h5>
+              <p>Mobile-friendly layout</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Bootstrap 5.1 JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  
+  <!-- Mobile-Friendly Form JavaScript -->
+  <script>
+    // Mobile-friendly form enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Password visibility toggle
+      const togglePassword = document.getElementById('togglePassword');
+      const registerPassword = document.getElementById('registerPassword');
+      
+      if (togglePassword && registerPassword) {
+        togglePassword.addEventListener('click', function() {
+          const type = registerPassword.getAttribute('type') === 'password' ? 'text' : 'password';
+          registerPassword.setAttribute('type', type);
+          this.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+      }
+      
+
+      
+      // Form validation
+      const registerForm = document.getElementById('registerForm');
+      
+      if (registerForm) {
+        registerForm.addEventListener('submit', function(event) {
+          event.preventDefault();
+          event.stopPropagation();
+          
+          // Custom validation for password confirmation
+          const password = document.getElementById('registerPassword').value;
+          const confirmPassword = document.getElementById('confirmPassword').value;
+          const confirmPasswordField = document.getElementById('confirmPassword');
+          
+          if (password !== confirmPassword) {
+            confirmPasswordField.setCustomValidity('Passwords do not match');
+          } else {
+            confirmPasswordField.setCustomValidity('');
+          }
+          
+          // Password strength validation
+          const passwordField = document.getElementById('registerPassword');
+          const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+          
+          if (!passwordRegex.test(password)) {
+            passwordField.setCustomValidity('Password must be 8-20 characters with letters and numbers');
+          } else {
+            passwordField.setCustomValidity('');
+          }
+          
+
+          
+          if (registerForm.checkValidity()) {
+            // Form is valid - show success message
+            showFormSuccess();
+          } else {
+            // Form is invalid - show validation feedback
+            registerForm.classList.add('was-validated');
+            
+            // Focus on first invalid field for better mobile UX
+            const firstInvalidField = registerForm.querySelector(':invalid');
+            if (firstInvalidField) {
+              firstInvalidField.focus();
+              firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }
+        });
+        
+        // Clear validation on input change
+        const inputs = registerForm.querySelectorAll('input, select, textarea');
+        inputs.forEach(function(input) {
+          input.addEventListener('input', function() {
+            if (this.checkValidity()) {
+              this.classList.remove('is-invalid');
+              this.classList.add('is-valid');
+            } else {
+              this.classList.remove('is-valid');
+            }
+          });
+        });
+      }
+      
+      // Mobile-friendly success message
+      function showFormSuccess() {
+        // Create and show success alert
+        const alertHTML = `
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Success!</strong> Registration completed successfully! 
+            This is a demo - no data was actually sent.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        `;
+        
+        const form = registerForm;
+        form.insertAdjacentHTML('beforebegin', alertHTML);
+        
+        // Reset form
+        form.reset();
+        form.classList.remove('was-validated');
+        
+        // Remove success/error classes from inputs
+        const inputs = form.querySelectorAll('input, select, textarea');
+        inputs.forEach(function(input) {
+          input.classList.remove('is-valid', 'is-invalid');
+        });
+        
+
+        
+        // Scroll to success message
+        const alert = form.previousElementSibling;
+        alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto-remove alert after 5 seconds
+        setTimeout(function() {
+          if (alert && alert.classList.contains('alert')) {
+            alert.remove();
+          }
+        }, 5000);
+      }
+      
+      // Mobile keyboard optimization - smooth scroll to focused inputs
+      const allInputs = document.querySelectorAll('input, textarea, select');
+      allInputs.forEach(function(input) {
+        input.addEventListener('focus', function() {
+          setTimeout(function() {
+            input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 300);
+        });
+      });
+    });
+  </script>
+  
+  <!-- Your existing scripts -->
   <script src="./react-hello.js"></script>
 </body>
 </html>
