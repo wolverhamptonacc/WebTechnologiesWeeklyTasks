@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel PHP Framework Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .server-status {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        .concept-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+        .concept-card h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #5a6fd8;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Laravel PHP Framework Tutorial</h1>
+        <p>Learn fundamental Laravel concepts with hands-on examples</p>
+    </div>
+
+    <div class="server-status">
+        <h3>🔧 Laravel Server Running</h3>
+        <p><strong>Server:</strong> <a href="http://localhost:8000">http://localhost:8000</a></p>
+        <p><strong>Status:</strong> Active and ready for development</p>
+        <a href="examples/" class="btn">Open Laravel Examples</a>
+    </div>
+
+    <div class="concepts-grid">
+        <div class="concept-card">
+            <h3> Routing & Parameters</h3>
+            <p>Learn how to define routes, handle parameters, and create RESTful endpoints.</p>
+            <div class="code-block">
+Route::get('/user/{id}', function ($id) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return "User ID: " . $id;<br>
+});
+            </div>
+            <a href="routing.php" class="btn">View Routing Examples</a>
+        </div>
+
+        <div class="concept-card">
+            <h3>🎛️ Controllers & Resources</h3>
+            <p>Organize your application logic using controllers and resource routing.</p>
+            <div class="code-block">
+class UserController extends Controller {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;public function show($id) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return view('user', ['id' => $id]);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+}
+            </div>
+            <a href="controllers.php" class="btn">View Controller Examples</a>
+        </div>
+
+        <div class="concept-card">
+            <h3> Requests & Validation</h3>
+            <p>Handle HTTP requests, validate input data, and process form submissions.</p>
+            <div class="code-block">
+$request->validate([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'name' => 'required|max:255',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'email' => 'required|email'<br>
+]);
+            </div>
+            <a href="requests.php" class="btn">View Request Examples</a>
+        </div>
+
+        <div class="concept-card">
+            <h3> Responses (HTML/JSON)</h3>
+            <p>Return different types of responses including HTML views and JSON data.</p>
+            <div class="code-block">
+return response()->json([<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'message' => 'Success',<br>
+&nbsp;&nbsp;&nbsp;&nbsp;'data' => $user<br>
+]);
+            </div>
+            <a href="responses.php" class="btn">View Response Examples</a>
+        </div>
+
+        <div class="concept-card">
+            <h3> Views & Templates</h3>
+            <p>Create dynamic HTML templates using Blade templating engine.</p>
+            <div class="code-block">
+@extends('layout')<br>
+@section('content')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&lt;h1&gt;{{ $title }}&lt;/h1&gt;<br>
+@endsection
+            </div>
+            <a href="views.php" class="btn">View Template Examples</a>
+        </div>
+
+        <div class="concept-card">
+            <h3> Middleware & CSRF</h3>
+            <p>Protect your application with middleware and CSRF token validation.</p>
+            <div class="code-block">
+Route::middleware(['auth', 'verified'])<br>
+&nbsp;&nbsp;&nbsp;&nbsp;->group(function () {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Route::get('/dashboard', ...);<br>
+&nbsp;&nbsp;&nbsp;&nbsp;});
+            </div>
+            <a href="middleware.php" class="btn">View Security Examples</a>
+        </div>
+    </div>
+
+    <div style="margin-top: 2rem; text-align: center; color: #666;">
+        <p>This tutorial covers Laravel basics using PHP's built-in server for simplicity.</p>
+        <p>For production applications, use proper Laravel installation with Composer.</p>
+    </div>
+</body>
+</html>
