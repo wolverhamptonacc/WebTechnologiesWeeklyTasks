@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laravel API Testing Interface</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .endpoint-card {
+            margin-bottom: 1rem;
+        }
+        .method-badge {
+            font-weight: bold;
+            min-width: 70px;
+            display: inline-block;
+            text-align: center;
+        }
+        .response-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .success { color: #155724; background: #d4edda; }
+        .error { color: #721c24; background: #f8d7da; }
+    </style>
+</head>
+<body>
+    <div class="container-fluid py-4">
+        <h1>Laravel API Testing Interface</h1>
+        <p class="lead">Test all CRUD operations with your Laravel-style PHP API</p>
+        
+        <div class="row">
+            <!-- GET All Users -->
+            <div class="col-lg-6 mb-4">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <span class="badge bg-success method-badge">GET</span>
+                        <strong>/api.php</strong> - List All Users
+                    </div>
+                    <div class="card-body">
+                        <button class="btn btn-success" onclick="getAllUsers()">
+                            Test GET All Users
+                        </button>
+                        <div id="get-all-response" class="response-area mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GET Single User -->
+            <div class="col-lg-6 mb-4">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <span class="badge bg-success method-badge">GET</span>
+                        <strong>/api.php/{id}</strong> - Get Single User
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">User ID</span>
+                            <input type="number" class="form-control" id="get-user-id" value="1" min="1">
+                            <button class="btn btn-success" onclick="getSingleUser()">
+                                Test GET User
+                            </button>
+                        </div>
+                        <div id="get-single-response" class="response-area" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POST Create User -->
+            <div class="col-lg-6 mb-4">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <span class="badge bg-primary method-badge">POST</span>
+                        <strong>/api.php</strong> - Create New User
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="create-name" value="Alice Wilson">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="create-email" value="alice@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" id="create-role">
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="moderator">Moderator</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" onclick="createUser()">
+                            Test POST Create User
+                        </button>
+                        <div id="post-response" class="response-area mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PUT Update User -->
+            <div class="col-lg-6 mb-4">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <span class="badge bg-warning method-badge">PUT</span>
+                        <strong>/api.php/{id}</strong> - Update User
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">User ID</label>
+                            <input type="number" class="form-control" id="update-id" value="1" min="1">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control" id="update-name" value="John Doe Updated">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="update-email" value="john.updated@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-select" id="update-role">
+                                <option value="user">User</option>
+                                <option value="admin" selected>Admin</option>
+                                <option value="moderator">Moderator</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-warning" onclick="updateUser()">
+                            Test PUT Update User
+                        </button>
+                        <div id="put-response" class="response-area mt-3" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DELETE User -->
+            <div class="col-lg-6 mb-4">
+                <div class="card endpoint-card">
+                    <div class="card-header">
+                        <span class="badge bg-danger method-badge">DELETE</span>
+                        <strong>/api.php/{id}</strong> - Delete User
+                    </div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">User ID</span>
+                            <input type="number" class="form-control" id="delete-user-id" value="3" min="1">
+                            <button class="btn btn-danger" onclick="deleteUser()">
+                                Test DELETE User
+                            </button>
+                        </div>
+                        <div class="alert alert-warning">
+                            <small>⚠️ This will permanently delete the user!</small>
+                        </div>
+                        <div id="delete-response" class="response-area" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- API Documentation -->
+            <div class="col-lg-6 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>API Documentation</strong>
+                    </div>
+                    <div class="card-body">
+                        <h6>Response Format:</h6>
+                        <pre class="bg-light p-2 rounded"><code>{
+  "status": "success|error",
+  "message": "Description",
+  "data": {...},
+  "errors": {...} // Only on validation errors
+}</code></pre>
+                        
+                        <h6 class="mt-3">HTTP Status Codes:</h6>
+                        <ul class="small">
+                            <li><code>200</code> - Success</li>
+                            <li><code>201</code> - Created</li>
+                            <li><code>400</code> - Bad Request</li>
+                            <li><code>404</code> - Not Found</li>
+                            <li><code>409</code> - Conflict (duplicate email)</li>
+                            <li><code>422</code> - Validation Error</li>
+                        </ul>
+                        
+                        <div class="mt-3">
+                            <a href="react-laravel-app.html" class="btn btn-info">
+                                View React Integration
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api.php';
+
+        function showResponse(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = `response-area ${isError ? 'error' : 'success'}`;
+            element.textContent = JSON.stringify(data, null, 2);
+        }
+
+        async function makeRequest(url, options = {}) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                    },
+                    ...options
+                });
+                
+                const data = await response.json();
+                return { data, status: response.status, ok: response.ok };
+            } catch (error) {
+                return { 
+                    data: { status: 'error', message: error.message }, 
+                    status: 0, 
+                    ok: false 
+                };
+            }
+        }
+
+        async function getAllUsers() {
+            const result = await makeRequest(API_BASE);
+            showResponse('get-all-response', result.data, !result.ok);
+        }
+
+        async function getSingleUser() {
+            const id = document.getElementById('get-user-id').value;
+            if (!id) {
+                showResponse('get-single-response', { error: 'Please enter a user ID' }, true);
+                return;
+            }
+            
+            const result = await makeRequest(`${API_BASE}/${id}`);
+            showResponse('get-single-response', result.data, !result.ok);
+        }
+
+        async function createUser() {
+            const userData = {
+                name: document.getElementById('create-name').value,
+                email: document.getElementById('create-email').value,
+                role: document.getElementById('create-role').value
+            };
+
+            if (!userData.name || !userData.email) {
+                showResponse('post-response', { error: 'Name and email are required' }, true);
+                return;
+            }
+
+            const result = await makeRequest(API_BASE, {
+                method: 'POST',
+                body: JSON.stringify(userData)
+            });
+            
+            showResponse('post-response', result.data, !result.ok);
+        }
+
+        async function updateUser() {
+            const id = document.getElementById('update-id').value;
+            const userData = {
+                name: document.getElementById('update-name').value,
+                email: document.getElementById('update-email').value,
+                role: document.getElementById('update-role').value
+            };
+
+            if (!id || !userData.name || !userData.email) {
+                showResponse('put-response', { error: 'ID, name and email are required' }, true);
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(userData)
+            });
+            
+            showResponse('put-response', result.data, !result.ok);
+        }
+
+        async function deleteUser() {
+            const id = document.getElementById('delete-user-id').value;
+            
+            if (!id) {
+                showResponse('delete-response', { error: 'Please enter a user ID' }, true);
+                return;
+            }
+
+            if (!confirm(`Are you sure you want to delete user ${id}?`)) {
+                return;
+            }
+
+            const result = await makeRequest(`${API_BASE}/${id}`, {
+                method: 'DELETE'
+            });
+            
+            showResponse('delete-response', result.data, !result.ok);
+        }
+
+        // Load initial data when page loads
+        window.addEventListener('load', function() {
+            getAllUsers();
+        });
+    </script>
+</body>
+</html>
